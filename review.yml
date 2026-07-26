@@ -1,0 +1,393 @@
+aid: properly
+name: Properly
+review:
+  question: Does Properly publish a public, documented API — and what is its RESO posture?
+  answer: false
+  date: '2026-07-26'
+  reviewer: API Evangelist
+  homeMarket: Canada
+  tier: ibuyer
+
+corporateStatus:
+  status: >-
+    Brand absorbed. Properly (Properly Homes Inc., Toronto, founded 2018) was acquired by
+    Pine Canada Financial Corporation in October 2023. As of 2026-07-26 both https://properly.ca/
+    and https://www.properly.ca/ return HTTP 301 with location https://www.pine.ca/homes/,
+    served by "AmazonS3" behind CloudFront (x-cache: Hit from cloudfront) — a redirect-only
+    bucket, meaning no Properly application is being served at all. Following redirects lands
+    on https://www.pine.ca/real-estate (HTTP 200). The literal string "Properly" occurs zero
+    times in that page's HTML, so the brand is retired rather than co-branded. Everything
+    recorded below about live infrastructure is therefore recorded against Pine, Properly's
+    successor, and is labelled as such.
+
+sectorPosture:
+  homeMarket: Canada
+  resoPosture: >-
+    No RESO reference found. Neither Properly nor its successor Pine is RESO-certified, and
+    neither appears to be a RESO member. RESO's own Canadian Membership page
+    (https://www.reso.org/canadian-membership/, HTTP 200, fetched 2026-07-26) enumerates the
+    Canadian organizations "helping to pave the way" — The Canadian Real Estate Association /
+    L'Association canadienne de l'immobilier, Centris, Clientime, Falcon Technologies
+    Corporation, Listed, Local Logic, Multi List Platform Limited Partnership, Municipal
+    Property Assessment Corporation (MPAC), Origin Confirmed Ltd, Phoenix Software, Planitar,
+    PropTexx, Prospects Software, REALTORS Association of Edmonton, Real Estate Board of
+    Greater Vancouver, Saskatchewan REALTORS Association, Templates 4 Business, Victoria Real
+    Estate Board, Winnipeg Regional Real Estate Board — and a case-insensitive search of that
+    page for "Properly" and "Pine" returns no match. No RESO Web API certification, no Data
+    Dictionary certification (therefore no version), no certification directory entry, no
+    Reso/OData endpoint, no $metadata document, and no Universal Property Identifier (UPI)
+    usage was observed on any properly.ca or pine.ca host. The only occurrence of the literal
+    token "RESO" anywhere in the fetched HTML of https://www.pine.ca/real-estate is inside the
+    i18n string key "RESOURCES", which is not a RESO reference. This is the expected Canadian
+    answer: RESO certification is a US industry mandate driven by NAR, while Canadian
+    residential listings flow through CREA's national Data Distribution Facility (DDF).
+  resoCertified: false
+  resoCertificationType: none
+  resoDataDictionaryVersion: null
+  resoDirectoryEvidence: >-
+    https://certification.reso.org/ and https://certification.reso.org/organizations were both
+    probed on 2026-07-26 and returned HTTP 400, yielding no usable directory content
+    anonymously. https://www.reso.org/certified-organizations/ returned HTTP 404 and
+    https://www.reso.org/reso-certification-directory/ returned HTTP 404;
+    https://www.reso.org/certification/ returned HTTP 200 but is a product page describing the
+    certification programme, not a searchable registry. Negative RESO evidence therefore rests
+    on RESO's published Canadian membership roster, which lists neither Properly nor Pine.
+  accessGate: none-published
+  accessGateDetail: >-
+    There is nothing for a developer to sign or join, because nothing is offered. Properly
+    publishes no developer portal, no API program page, no partner page, no data-licensing
+    page, no application form, and no API terms of use — and the company's web presence no
+    longer exists independently, so there is no surface on which such a programme could be
+    published. Pine, the successor, publishes none of these either: https://www.pine.ca/developers
+    and https://www.pine.ca/api both return HTTP 200 but are Next.js soft-404s carrying
+    <title>Page not found</title>, not developer pages. A developer cannot self-serve, cannot
+    apply, and is not offered a partner path. The only genuine machine surface is
+    https://api.pine.ca/, an AWS API Gateway that answers every probed path with HTTP 403 and
+    the body {"message":"Missing Authentication Token"} (header x-amzn-errortype:
+    MissingAuthenticationTokenException) — a private first-party backend with no documentation,
+    no key issuance, and no published contract. Underneath all of this, the listing data itself
+    is doubly licensed: Pine operates as a licensed brokerage (footer: "Pine Real Estate
+    Brokerage FSRA Brokerage License ON #13410 | AB #00527319 | SK #511826 | NS #2022-3000465 |
+    NB #230000436 | NL 23-07PI045-1") and its listing media is delivered from cdn.repliers.io,
+    the CDN of the commercial MLS data vendor Repliers, whose own developer guide states
+    "Leading innovators in Canadian real estate, such as Wahi, Buy.ca, and Pine (formerly
+    Properly), use Repliers as their MLS API solution." A third party wanting this data must
+    become a member brokerage, sign a CREA DDF or board IDX/VOW data licence, or buy access
+    from a vendor such as Repliers — none of which is a path Properly offers.
+  openData: false
+  openDataDetail: >-
+    No open, unlicensed, publicly callable dataset exists at Properly or Pine. The only
+    machine-readable public documents are SEO crawl aids: https://www.pine.ca/sitemap.xml
+    (HTTP 200, a sitemapindex served from a CloudFront origin) pointing at sitemap-static,
+    sitemap-blog, sitemap-partners, sitemap-listings-1, and sitemap-places-1. Those are HTML
+    crawl indexes, not a data product, and https://www.pine.ca/robots.txt explicitly
+    "Disallow: /listings" for all user agents. Canada has no national counterpart to HM Land
+    Registry Price Paid or Ordnance Survey open products; provincial land registration is
+    largely privatised (Teranet operates Ontario's registry under long concession), so even the
+    public record is a commercial product in this market.
+  authModel: >-
+    None published. There is no API key programme, no OAuth 2.0 or OpenID Connect developer
+    flow, and no SAML member portal documented for third parties.
+    https://properly.ca/.well-known/openid-configuration redirects into a Pine HTTP 404;
+    https://www.pine.ca/.well-known/openid-configuration returns HTTP 404 and
+    https://www.pine.ca/.well-known/security.txt returns HTTP 404;
+    https://api.pine.ca/.well-known/openid-configuration returns HTTP 403 with
+    MissingAuthenticationTokenException. The only observable authentication requirement is that
+    undocumented API Gateway token, which implies a first-party bearer/IAM scheme but is not
+    described anywhere publicly, so no scheme is asserted here. Consumer sign-in at
+    https://www.pine.ca/login and the separate application host https://apply.pine.ca/
+    (HTTP 200) are ordinary end-user account flows, not developer authentication.
+  webhooksEventsSdksPostman: >-
+    None found. No webhook or event documentation, no AsyncAPI, no GraphQL schema, no published
+    SDK, no CLI, and no Postman workspace or collection. No GitHub organization could be
+    attributed: https://github.com/properly (HTTP 200) is an unrelated organization created
+    2012-06-21 whose declared blog is properly.com.br, and https://github.com/pinecanada
+    returns HTTP 404. Absence across every category is itself the finding.
+  productApiFamily: >-
+    Faithfully, Properly had product surfaces and no API family, and its successor is the same.
+    The segmentation the surviving pages actually use is: listing search — map-based home
+    search at https://www.pine.ca/map and https://www.pine.ca/homes (both HTTP 200), with
+    province and city landing pages; valuation/AVM — home valuation at
+    https://www.pine.ca/home-valuation (HTTP 200), the descendant of Properly's algorithmic
+    offer and Sale Assurance pricing; mortgage — Pine's own digital mortgage origination at
+    https://www.pine.ca/mortgage with applications at https://apply.pine.ca/; and an AI page at
+    https://www.pine.ca/ai (HTTP 200). None of these four is offered as a callable, documented
+    API. Properly's own historic products — the iBuyer cash offer in Calgary and the later Sale
+    Assurance guaranteed-purchase backstop — no longer have any live web surface at all.
+  coverage: >-
+    Canada. Brokerage licensing named in the Pine footer covers Ontario, Alberta, Saskatchewan,
+    Nova Scotia, New Brunswick, and Newfoundland and Labrador. Listing inventory observed on
+    https://www.pine.ca/real-estate on 2026-07-26 was Ottawa, Ontario. Properly itself operated
+    historically in Calgary and Toronto.
+
+findings:
+  summary: |
+    Properly is a defunct brand with no developer surface, and its successor has none either.
+    Every conventional developer entry point was probed on 2026-07-26. On properly.ca the
+    subdomains developer., developers., api., docs., app. and blog. all fail DNS resolution
+    (curl exit 6, could not resolve host), and the root plus every contract path — /developers,
+    /api, /docs, /openapi.json, /swagger.json, /api-docs, /$metadata, /odata, /Reso,
+    /.well-known/openid-configuration, /.well-known/security.txt, /robots.txt, /sitemap.xml —
+    is 301-redirected into www.pine.ca where it returns HTTP 404. On pine.ca the same paths
+    return either a real HTTP 404 or a soft-200 Next.js page whose <title> is literally
+    "Page not found", which is why the HTTP 200 on /developers, /api and /openapi.json must not
+    be mistaken for content: /openapi.json returns 167,549 bytes of HTML, not JSON. No OpenAPI,
+    no Swagger, no OData $metadata, no AsyncAPI, no GraphQL schema, no Postman collection, and
+    no SDK was found anywhere, so no openapi/ directory was created and apis[] is empty. The
+    one real machine surface, https://api.pine.ca/, is an AWS API Gateway that refuses every
+    path with MissingAuthenticationTokenException; it is a private backend, not a product, and
+    is deliberately NOT listed in apis.yml. RESO is absent — no certification, no membership,
+    no OData, no UPI — which is the honest and expected answer for a Canadian challenger:
+    certification is a US industry mandate, while the Canadian seam is CREA's DDF, and this
+    platform reaches listing data as a licensed brokerage buying from the MLS data vendor
+    Repliers, evidenced by 628 references to cdn.repliers.io in the HTML of
+    https://www.pine.ca/map and by CREA's MLS and REALTOR trademark attribution in the footer.
+    Certification is not reachability here in the starkest possible way: there is neither.
+  developerPortal: none
+  developerPortalConfirmed: false
+  openapiHarvested: false
+  specsCount: 0
+  gated: true
+  gateType: none-published
+
+probes:
+  - url: https://properly.ca/
+    status: 301
+    note: >-
+      location https://www.pine.ca/homes/, server AmazonS3, x-cache Hit from cloudfront,
+      content-length 0. Redirect-only bucket; no Properly application is served.
+  - url: https://www.properly.ca/
+    status: 301
+    note: Identical 301 to https://www.pine.ca/homes/ from the same S3/CloudFront redirect bucket.
+  - url: https://developer.properly.ca/
+    status: 000
+    note: DNS does not resolve (curl 6, could not resolve host).
+  - url: https://developers.properly.ca/
+    status: 000
+    note: DNS does not resolve (curl 6, could not resolve host).
+  - url: https://api.properly.ca/
+    status: 000
+    note: DNS does not resolve (curl 6, could not resolve host).
+  - url: https://docs.properly.ca/
+    status: 000
+    note: DNS does not resolve (curl 6, could not resolve host).
+  - url: https://app.properly.ca/
+    status: 000
+    note: DNS does not resolve (curl 6, could not resolve host).
+  - url: https://blog.properly.ca/
+    status: 404
+    note: Resolves via the redirect bucket only; follows to https://www.pine.ca/homes/blog which 404s.
+  - url: https://properly.ca/developers
+    status: 404
+    note: Redirects to https://www.pine.ca/homes/developers, HTTP 404.
+  - url: https://properly.ca/api
+    status: 404
+    note: Redirects to https://www.pine.ca/homes/api, HTTP 404.
+  - url: https://properly.ca/docs
+    status: 404
+    note: Redirects to https://www.pine.ca/homes/docs, HTTP 404.
+  - url: https://properly.ca/openapi.json
+    status: 404
+    note: Redirects to https://www.pine.ca/homes/openapi.json, HTTP 404. No specification.
+  - url: https://properly.ca/swagger.json
+    status: 404
+    note: Redirects to https://www.pine.ca/homes/swagger.json, HTTP 404. No specification.
+  - url: https://properly.ca/api-docs
+    status: 404
+    note: Redirects to https://www.pine.ca/homes/api-docs, HTTP 404.
+  - url: https://properly.ca/$metadata
+    status: 404
+    note: >-
+      Redirects to https://www.pine.ca/homes/$metadata, HTTP 404. No OData metadata document;
+      this is not an OData service, so there is no RESO Web API contract to harvest.
+  - url: https://properly.ca/odata
+    status: 404
+    note: Redirects to https://www.pine.ca/homes/odata, HTTP 404.
+  - url: https://properly.ca/Reso
+    status: 404
+    note: Redirects to https://www.pine.ca/homes/Reso, HTTP 404. No RESO route exists.
+  - url: https://properly.ca/.well-known/openid-configuration
+    status: 404
+    note: Redirects into Pine and 404s. No OpenID Connect discovery document.
+  - url: https://properly.ca/.well-known/security.txt
+    status: 404
+    note: No security.txt / vulnerability disclosure pointer.
+  - url: https://properly.ca/robots.txt
+    status: 404
+    note: No robots.txt survives on the Properly domain; the redirect bucket forwards it into a Pine 404.
+  - url: https://properly.ca/sitemap.xml
+    status: 404
+    note: No sitemap survives on the Properly domain.
+  - url: https://www.pine.ca/real-estate
+    status: 200
+    note: >-
+      Successor real estate page. Contains CREA REALTOR and MLS trademark attribution and
+      "Pine Real Estate Brokerage FSRA Brokerage License ON #13410 | AB #00527319 | SK #511826 |
+      NS #2022-3000465 | NB #230000436 | NL 23-07PI045-1". Zero occurrences of "Properly";
+      zero occurrences of "API", "IDX", "DDF"; the sole "RESO" token is inside the i18n key
+      "RESOURCES".
+  - url: https://www.pine.ca/developers
+    status: 200
+    note: Soft-404. HTTP 200 but <title>Page not found</title>, 167,545 bytes of HTML. Not a developer portal.
+  - url: https://www.pine.ca/api
+    status: 200
+    note: Soft-404. HTTP 200 with <title>Page not found</title>, 166,042 bytes of HTML.
+  - url: https://www.pine.ca/openapi.json
+    status: 200
+    note: >-
+      Soft-404. HTTP 200 but the body is 167,549 bytes of HTML with <title>Page not found</title>,
+      not JSON. Not a specification.
+  - url: https://www.pine.ca/.well-known/openid-configuration
+    status: 404
+    note: No OpenID Connect discovery document served anonymously.
+  - url: https://www.pine.ca/.well-known/security.txt
+    status: 404
+    note: No security.txt.
+  - url: https://api.pine.ca/
+    status: 403
+    note: >-
+      AWS API Gateway. Body {"message":"Missing Authentication Token"}, headers x-amzn-errortype:
+      MissingAuthenticationTokenException, x-amz-apigw-id present. Private first-party backend.
+  - url: https://api.pine.ca/openapi.json
+    status: 403
+    note: Same MissingAuthenticationTokenException. No anonymous contract.
+  - url: https://api.pine.ca/swagger.json
+    status: 403
+    note: Same MissingAuthenticationTokenException.
+  - url: https://api.pine.ca/docs
+    status: 403
+    note: Same MissingAuthenticationTokenException.
+  - url: https://api.pine.ca/v1
+    status: 403
+    note: Same MissingAuthenticationTokenException.
+  - url: https://api.pine.ca/.well-known/openid-configuration
+    status: 403
+    note: Same MissingAuthenticationTokenException. No anonymous OIDC discovery.
+  - url: https://developer.pine.ca/
+    status: 000
+    note: DNS does not resolve.
+  - url: https://developers.pine.ca/
+    status: 000
+    note: DNS does not resolve.
+  - url: https://docs.pine.ca/
+    status: 000
+    note: DNS does not resolve.
+  - url: https://apply.pine.ca/
+    status: 200
+    note: Consumer mortgage application host. End-user flow, not a developer surface.
+  - url: https://www.pine.ca/robots.txt
+    status: 200
+    note: >-
+      Real robots.txt. "Disallow: /listings" for all user agents and for AhrefsBot, SemrushBot
+      and Bingbot; allows /login, /signup, /mortgage, /real-estate, /about-us, /ai, /prime-rates,
+      /listing, /map. No API or feed routes disclosed.
+  - url: https://www.pine.ca/sitemap.xml
+    status: 200
+    note: >-
+      sitemapindex served from a CloudFront origin, listing sitemap-static, sitemap-blog,
+      sitemap-partners, sitemap-listings-1, sitemap-places-1. SEO crawl aid, not a dataset.
+  - url: https://www.pine.ca/map
+    status: 200
+    note: >-
+      Map-based listing search. 628 references to https://cdn.repliers.io in the HTML — hard
+      evidence that listing media is delivered by the licensed MLS data vendor Repliers.
+  - url: https://www.pine.ca/home-valuation
+    status: 200
+    note: Consumer AVM / home valuation product page. No API.
+  - url: https://www.pine.ca/homes
+    status: 200
+    note: Home search entry point.
+  - url: https://www.pine.ca/ai
+    status: 200
+    note: AI product page. No developer or API content.
+  - url: https://www.pine.ca/resources
+    status: 200
+    note: <title>Pine | Resources for every step of homeownership</title>. Blog. Recorded in apis.yml common.
+  - url: https://www.pine.ca/sitemap-blog.xml
+    status: 200
+    note: Valid XML urlset of /resources/ blog posts. Used in place of an RSS feed.
+  - url: https://www.pine.ca/rss.xml
+    status: 200
+    note: >-
+      Soft-404. HTTP 200 but the body begins "<!DOCTYPE html>" — the Next.js shell, not RSS.
+      No BlogRSS is recorded because no feed exists.
+  - url: https://www.reso.org/canadian-membership/
+    status: 200
+    note: >-
+      RESO's own Canadian member roster (142,871 bytes). Case-insensitive search for "Properly"
+      and "Pine" returns no match.
+  - url: https://certification.reso.org/
+    status: 400
+    note: No usable certification directory content returned anonymously.
+  - url: https://certification.reso.org/organizations
+    status: 400
+    note: No usable certification directory content returned anonymously.
+  - url: https://www.reso.org/certified-organizations/
+    status: 404
+    note: No such directory page.
+  - url: https://www.reso.org/reso-certification-directory/
+    status: 404
+    note: No such directory page.
+  - url: https://www.reso.org/certification/
+    status: 200
+    note: Programme description page, not a searchable registry of certified organizations.
+  - url: https://www.crea.ca/ddf/
+    status: 200
+    note: >-
+      Redirects to CREA's REALTOR.ca DDF page. The Canadian national syndication seam; the route
+      by which a third party would license listing data, and not something Properly offers.
+  - url: https://ddfapi.realtor.ca/
+    status: 404
+    note: DDF API host resolves but the bare root returns 404; no anonymous contract or metadata document.
+  - url: https://data.crea.ca/
+    status: 403
+    note: Resolves and refuses anonymous access.
+  - url: https://api.realtor.ca/
+    status: 000
+    note: DNS does not resolve.
+  - url: https://github.com/properly
+    status: 200
+    note: >-
+      NOT this company. GitHub org id 1876999, created 2012-06-21, declared blog properly.com.br
+      — a Brazilian namesake, six years older than the Canadian Properly. Deliberately excluded
+      from apis.yml.
+  - url: https://github.com/pinecanada
+    status: 404
+    note: No successor GitHub organization found under this handle.
+  - url: https://repliers.com/a-guide-to-mls-apis-in-canada/
+    status: 200
+    note: >-
+      Vendor guide stating "Leading innovators in Canadian real estate, such as Wahi, Buy.ca,
+      and Pine (formerly Properly), use Repliers as their MLS API solution." Corroborates the
+      cdn.repliers.io evidence on pine.ca/map. Vendor-published claim, recorded as such.
+
+sources:
+  - url: https://www.pine.ca/real-estate
+    type: Documentation
+    note: Successor product surface; CREA/MLS attribution and brokerage licence numbers.
+  - url: https://www.pine.ca/robots.txt
+    type: Documentation
+    note: Only real robots.txt in the estate; discloses no API or feed routes and disallows /listings.
+  - url: https://www.reso.org/canadian-membership/
+    type: Documentation
+    note: RESO's own Canadian membership roster; neither Properly nor Pine appears on it.
+  - url: https://repliers.com/a-guide-to-mls-apis-in-canada/
+    type: Documentation
+    note: Names Pine (formerly Properly) as a Repliers MLS API customer; explains the CREA DDF vs board-IDX access routes.
+  - url: https://www.crea.ca/technology/realtor-ca-for-realtors/realtor-ca-tools/realtor-ca-ddf/
+    type: Documentation
+    note: CREA's Data Distribution Facility — the actual Canadian licensing seam for listing data.
+  - url: https://www.pine.ca/resources/pine-acquires-leading-real-estate-innovator-properly
+    type: Documentation
+    note: Pine's own announcement of the October 2023 acquisition of Properly (HTTP 200).
+
+actions:
+  apisYmlCreated: true
+  apisListed: 0
+  openapiDirectoryCreated: false
+  reason: >-
+    apis[] is deliberately empty. Properly documents no public API and no longer serves a web
+    application of its own, and its successor Pine documents none either. Listing the
+    undocumented api.pine.ca gateway would misrepresent a private, auth-refusing implementation
+    detail as a developer product. No specification of any kind — OpenAPI, Swagger, OData
+    $metadata, AsyncAPI, GraphQL, or Postman — was found, so no openapi/ directory was created.
