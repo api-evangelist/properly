@@ -1,0 +1,76 @@
+generated: '2026-07-26'
+method: searched
+source: https://www.reso.org/canadian-membership/
+summary: >-
+  Properly conforms to no published API or data standard, because it exposes no public
+  interface. Every entry below is a verified negative: the sector standards (RESO Web API,
+  RESO Data Dictionary, UPI, OData) were checked against RESO's own Canadian membership
+  roster and against live probes of properly.ca and pine.ca, and the cross-cutting standards
+  (OpenAPI, AsyncAPI, OAuth 2.0, OIDC, RFC 9457, MCP) were checked by direct contract
+  discovery. Absence of a record is recorded data, not an unexamined gap.
+standards:
+- id: reso-web-api
+  conforms: false
+  evidence: >-
+    Neither Properly nor its successor Pine appears on RESO's Canadian Membership roster
+    (https://www.reso.org/canadian-membership/, HTTP 200, 2026-07-26). No RESO Web API
+    certification and no OData service root or $metadata document on any properly.ca or
+    pine.ca host.
+- id: reso-data-dictionary
+  conforms: false
+  version: null
+  evidence: >-
+    No Data Dictionary certification found; https://certification.reso.org/ returned HTTP 400
+    anonymously, so the negative rests on the published Canadian membership roster.
+- id: reso-upi
+  conforms: false
+  evidence: No Universal Property Identifier usage observed on any Properly or Pine surface.
+- id: odata
+  conforms: false
+  evidence: /$metadata and /odata probed on properly.ca — 301 into a Pine HTTP 404.
+- id: crea-ddf
+  conforms: false
+  note: >-
+    Not a conformance claim by Properly. CREA MLS trademark attribution appears in the site
+    footer and listing media is served from cdn.repliers.io, the CDN of licensed MLS data
+    vendor Repliers, whose developer guide names "Pine (formerly Properly)" as a customer.
+    That is a brokerage/vendor licensing posture — consumption of a licensed feed, not
+    publication of a conformant interface.
+  evidence: https://repliers.com/a-guide-to-mls-apis-in-canada/
+- id: openapi
+  conforms: false
+  evidence: >-
+    /openapi.json, /swagger.json, /api-docs probed on properly.ca (404 after 301),
+    www.pine.ca (HTTP 200 Next.js soft-404s, text/html, "Page not found") and api.pine.ca
+    (HTTP 403 MissingAuthenticationTokenException). See well-known/properly-well-known.yml.
+- id: graphql
+  conforms: false
+  evidence: /graphql is a soft-404 on www.pine.ca and HTTP 403 on api.pine.ca; no introspectable endpoint.
+- id: asyncapi
+  conforms: false
+  evidence: No webhook, event or streaming documentation exists on any Properly or Pine surface.
+- id: mcp
+  conforms: false
+  evidence: No hosted or remote MCP server is published or discoverable.
+- id: oauth2
+  conforms: false
+  evidence: >-
+    No developer OAuth flow. /.well-known/oauth-authorization-server and
+    /.well-known/oauth-protected-resource are HTTP 404 on properly.ca and www.pine.ca, HTTP 403
+    on api.pine.ca.
+- id: oidc
+  conforms: false
+  evidence: /.well-known/openid-configuration is HTTP 404 on properly.ca and www.pine.ca, HTTP 403 on api.pine.ca.
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: No public error surface; the only observable response body is the API Gateway {"message":"Missing Authentication Token"}.
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: /.well-known/security.txt is HTTP 404 on properly.ca and www.pine.ca.
+compliance_program:
+  published: false
+  note: >-
+    No trust center, no SOC 2 / ISO 27001 / PCI DSS certification page, and no compliance
+    portal found for Properly or Pine. Regulated status is brokerage licensing, not an API
+    compliance program: Pine Real Estate Brokerage FSRA ON #13410, AB #00527319, SK #511826,
+    NS #2022-3000465, NB #230000436, NL 23-07PI045-1.

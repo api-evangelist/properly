@@ -45,6 +45,28 @@ modified: '2026-07-26'
 specificationVersion: '0.19'
 apis: []
 common:
+- type: DomainSecurity
+  url: security/properly-domain-security.yml
+  name: Domain security probe
+  description: Live TLS/HSTS/DNSSEC/CAA/SPF/DMARC probe of properly.ca and the successor pine.ca,
+    2026-07-26.
+- type: Lifecycle
+  url: lifecycle/properly-lifecycle.yml
+  name: Company and API lifecycle
+  description: Properly was acquired by Pine Canada Financial Corporation in October 2023 and
+    the brand is absorbed; properly.ca is a redirect-only bucket. No API versioning, deprecation
+    policy, SLA or status page exists.
+- type: Conformance
+  url: conformance/properly-conformance.yml
+  name: Standards conformance (verified negatives)
+  description: RESO Web API, RESO Data Dictionary, UPI, OData, OpenAPI, GraphQL, AsyncAPI, MCP,
+    OAuth 2.0, OIDC and RFC 9457 all checked against the RESO Canadian membership roster and
+    live probes — none conformed.
+- type: LLMsTxt
+  url: llms/properly-llms.txt
+  name: llms.txt
+  description: Generated llms.txt summarizing Properly's retired brand status, absent API
+    surface and the artifacts in this repository.
 - type: Website
   url: https://properly.ca/
   name: Properly (redirects)

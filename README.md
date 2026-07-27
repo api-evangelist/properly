@@ -46,6 +46,18 @@ RESO's own [Canadian Membership](https://www.reso.org/canadian-membership/) page
 
 None found — the absence is itself the finding. No webhook or event documentation, no AsyncAPI, no GraphQL schema, no published SDK or CLI, and no Postman workspace or collection. No GitHub organization could be attributed: [github.com/properly](https://github.com/properly) is an unrelated org created in 2012 whose declared blog is `properly.com.br`, and `github.com/pinecanada` returns HTTP 404.
 
+## Artifacts
+
+Enrichment round 2026-07-26. Contract discovery was re-run against every Properly and Pine host — `properly.ca`, `www.pine.ca`, `api.pine.ca` — and every probe missed, so the artifacts below record verified absence rather than a captured contract.
+
+- [`security/properly-domain-security.yml`](security/properly-domain-security.yml) — probed. `properly.ca` still presents a valid TLS 1.3 certificate (expires 2027-01-25) with HSTS `max-age=63072000`, SPF and a DMARC `p=reject`, despite serving nothing but a redirect; `pine.ca` matches on TLS/HSTS/SPF but sits at DMARC `p=none`. Neither domain has DNSSEC or CAA records.
+- [`well-known/properly-well-known.yml`](well-known/properly-well-known.yml) — probed. Every `/.well-known/` path (security.txt, openid-configuration, oauth-authorization-server, oauth-protected-resource, api-catalog, ai-plugin.json) is HTTP 404 on `properly.ca` and `www.pine.ca`, and HTTP 403 on `api.pine.ca`. Carries the full contract-discovery probe log: `www.pine.ca/openapi.json` returns HTTP 200 but is a 167 KB Next.js soft-404 titled "Page not found", not a spec.
+- [`conformance/properly-conformance.yml`](conformance/properly-conformance.yml) — searched. Thirteen verified negatives across the sector standards (RESO Web API, RESO Data Dictionary, UPI, OData, CREA DDF) and the cross-cutting ones (OpenAPI, GraphQL, AsyncAPI, MCP, OAuth 2.0, OIDC, RFC 9457, RFC 9116).
+- [`lifecycle/properly-lifecycle.yml`](lifecycle/properly-lifecycle.yml) — searched. Company lifecycle in place of an API lifecycle: founded 2018, acquired by Pine Canada Financial Corporation October 2023, brand absorbed, domain redirect-only. No versioning scheme, deprecation policy, SLA or status page.
+- [`llms/properly-llms.txt`](llms/properly-llms.txt) — generated. Agent-readable summary of the retired brand, the absent API surface, and this repository.
+
+No `openapi/`, `packages/`, `mcp/`, `skills/`, `sandbox/`, `changelog/`, `cli/`, `errors/`, `scopes/`, or `authentication/` artifacts exist, and none were fabricated: there is no specification to derive them from and no registry package, MCP server, or documented auth scheme to search for.
+
 ## Common Properties
 
 - [Website](https://properly.ca/) — historic Properly home page, HTTP 301 to Pine

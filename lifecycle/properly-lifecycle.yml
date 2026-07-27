@@ -1,0 +1,51 @@
+generated: '2026-07-26'
+method: searched
+source: https://www.pine.ca/real-estate
+summary: >-
+  Properly has no API lifecycle because it has no API — and, since October 2023, no independent
+  product. This artifact records the COMPANY lifecycle instead: the brand was acquired and has
+  been fully absorbed by its successor, and the historic domain now serves only a redirect.
+company_lifecycle:
+  status: retired
+  founded: 2018
+  headquarters: Toronto, Ontario, Canada
+  acquired:
+    date: '2023-10'
+    acquirer: Pine Canada Financial Corporation
+    acquirer_repo: ../pine/apis.yml
+  brand_state: >-
+    Absorbed. The literal string "Properly" appears zero times in the HTML of the surviving
+    real estate page at https://www.pine.ca/real-estate (checked 2026-07-26).
+  domain_state:
+    properly.ca: HTTP 301 -> https://www.pine.ca/homes/ (Amazon S3 + CloudFront redirect bucket)
+    www.properly.ca: HTTP 301 -> https://www.pine.ca/homes/
+    verified: '2026-07-26'
+  dns_subdomains_absent:
+  - developer.properly.ca
+  - developers.properly.ca
+  - api.properly.ca
+  - docs.properly.ca
+  - app.properly.ca
+  - blog.properly.ca
+api_lifecycle:
+  versioning: null
+  versioning_note: No API, therefore no versioning scheme, no version header, no dated release train.
+  deprecation:
+    policy_url: null
+    sunset_header: false
+    note: No deprecation policy is published; there is no public API surface to deprecate.
+  sla:
+    url: null
+    uptime_target: null
+  status_page: null
+  status_page_note: >-
+    No status page found for properly.ca or pine.ca. status.properly.ca and status.pine.ca do
+    not resolve, and no Statuspage/Instatus/Better Stack page is linked from either site.
+  deprecated_operations: []
+successor_surface:
+  host: https://api.pine.ca
+  kind: private-backend
+  evidence: >-
+    AWS API Gateway answering every probed path with HTTP 403
+    {"message":"Missing Authentication Token"} on 2026-07-26. No documentation, no key
+    issuance, no published contract — an implementation detail, not a developer product.

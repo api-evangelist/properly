@@ -1,0 +1,113 @@
+generated: '2026-07-26'
+method: probed
+source: live HTTP probes of properly.ca, www.pine.ca and api.pine.ca
+summary: >-
+  No /.well-known/ discovery document is published on any host associated with Properly or
+  its successor Pine. properly.ca answers HTTP 301 from an Amazon S3 / CloudFront redirect
+  bucket into www.pine.ca, where every /.well-known/ path returns HTTP 404. The private
+  backend api.pine.ca (AWS API Gateway) answers every path — including /.well-known/ paths —
+  with HTTP 403 and {"message":"Missing Authentication Token"}, so nothing is anonymously
+  discoverable there either. Recorded absence, not a gap in the probe.
+hosts:
+- host: https://properly.ca
+  note: HTTP 301 to https://www.pine.ca/homes/ (S3 + CloudFront redirect bucket)
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+- host: https://www.pine.ca
+  note: Successor brand surface (Next.js). Unknown paths are soft-404s returning HTTP 200 HTML.
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+- host: https://api.pine.ca
+  note: >-
+    Private AWS API Gateway. Every path answers HTTP 403 MissingAuthenticationTokenException,
+    so 403 here means "gateway reached, nothing anonymously readable" — not that a document exists.
+  documents:
+  - path: /.well-known/security.txt
+    status: 403
+  - path: /.well-known/openid-configuration
+    status: 403
+  - path: /.well-known/oauth-authorization-server
+    status: 403
+  - path: /.well-known/oauth-protected-resource
+    status: 403
+  - path: /.well-known/api-catalog
+    status: 403
+  - path: /.well-known/ai-plugin.json
+    status: 403
+files: []
+contract_probes:
+  summary: >-
+    Full contract discovery re-run on 2026-07-26 against every Properly and Pine host. No
+    OpenAPI, Swagger, GraphQL, AsyncAPI or MCP surface exists. On www.pine.ca the spec paths
+    return HTTP 200 but are Next.js soft-404s: content-type text/html, ~167 KB of HTML,
+    <title>Page not found</title>. On api.pine.ca every path is HTTP 403. On properly.ca every
+    path 301-redirects into a Pine 404.
+  probes:
+  - url: https://www.pine.ca/openapi.json
+    status: 200
+    content_type: text/html
+    parses_as_spec: false
+    note: Next.js soft-404, 167745 bytes of HTML titled "Page not found"
+  - url: https://www.pine.ca/swagger.json
+    status: 200
+    content_type: text/html
+    parses_as_spec: false
+    note: soft-404
+  - url: https://www.pine.ca/api-docs
+    status: 200
+    content_type: text/html
+    parses_as_spec: false
+    note: soft-404
+  - url: https://www.pine.ca/graphql
+    status: 200
+    content_type: text/html
+    parses_as_spec: false
+    note: soft-404; no GraphQL endpoint, introspection not attempted against an HTML page
+  - url: https://www.pine.ca/llms.txt
+    status: 200
+    content_type: text/html
+    parses_as_spec: false
+    note: soft-404; no llms.txt published
+  - url: https://api.pine.ca/openapi.json
+    status: 403
+    parses_as_spec: false
+  - url: https://api.pine.ca/swagger.json
+    status: 403
+    parses_as_spec: false
+  - url: https://api.pine.ca/graphql
+    status: 403
+    parses_as_spec: false
+  - url: https://properly.ca/openapi.json
+    status: 404
+    parses_as_spec: false
+    note: 301 into www.pine.ca, then 404
+  - url: https://properly.ca/swagger.json
+    status: 404
+    parses_as_spec: false
+  - url: https://properly.ca/graphql
+    status: 404
+    parses_as_spec: false
+  mcp_tools_list: not-attempted
+  mcp_note: No MCP server URL is published or discoverable for Properly or Pine.
