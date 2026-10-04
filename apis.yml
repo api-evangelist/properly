@@ -38,7 +38,7 @@ imageNote: >-
   No correct icon has been sourced yet. Shipping the wrong company's mark is worse
   than shipping none; re-run the icon backfill once a real asset exists.
 tags:
-- Real-Estate
+- Real Estate
 - Canada
 - Property Listings
 - MLS
@@ -55,6 +55,7 @@ tags_raw:
 - AVM
 - PropTech
 - Mortgage
+- Real-Estate
 deliveryModel:
   model: unknown
   open_source: false
